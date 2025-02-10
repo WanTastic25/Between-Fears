@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 1198023565750097065}
   - component: {fileID: 6493291190971530043}
   - component: {fileID: 8959386004698693797}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Ceiling (3)
   m_TagString: Wall
   m_Icon: {fileID: 0}
@@ -248,7 +248,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 57
+  m_VersionIndex: 60
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -367,7 +367,7 @@ GameObject:
   - component: {fileID: 7617053260247500360}
   - component: {fileID: 5763670530181556878}
   - component: {fileID: 1802114665630190099}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Ceiling
   m_TagString: Wall
   m_Icon: {fileID: 0}
@@ -601,7 +601,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 88
+  m_VersionIndex: 91
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -720,7 +720,7 @@ GameObject:
   - component: {fileID: 4842633407464620538}
   - component: {fileID: 2549875106086861109}
   - component: {fileID: 5716465064975417137}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Floor
   m_TagString: Ground
   m_Icon: {fileID: 0}
@@ -897,7 +897,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 944
+  m_VersionIndex: 947
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -1055,7 +1055,7 @@ GameObject:
   - component: {fileID: 2895201721058164679}
   - component: {fileID: 3604417317048471095}
   - component: {fileID: 3066592747502092298}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Ceiling (1)
   m_TagString: Wall
   m_Icon: {fileID: 0}
@@ -1289,7 +1289,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 51
+  m_VersionIndex: 54
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -1408,7 +1408,7 @@ GameObject:
   - component: {fileID: 4819443987781111165}
   - component: {fileID: 585277821507461572}
   - component: {fileID: 4016080057005061671}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Wall (4)
   m_TagString: Wall
   m_Icon: {fileID: 0}
@@ -1642,7 +1642,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 1172
+  m_VersionIndex: 1175
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -1761,7 +1761,7 @@ GameObject:
   - component: {fileID: 4405813711049025331}
   - component: {fileID: 3430888611982233911}
   - component: {fileID: 5539118446268819126}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Ceiling (2)
   m_TagString: Wall
   m_Icon: {fileID: 0}
@@ -1995,7 +1995,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 23
+  m_VersionIndex: 26
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []

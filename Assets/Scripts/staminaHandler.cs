@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Data.Common;
-using UnityEditor.Experimental.GraphView;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -55,6 +55,7 @@ public class staminaHandler : MonoBehaviour
 
     IEnumerator exhausted()
     {
+        FindObjectOfType<audioManager>().Play("tired");
         player.playerAnim.SetInteger("trigger", 5);
         player.moveSpeed = 0;
         player.tired = true;
@@ -69,8 +70,11 @@ public class staminaHandler : MonoBehaviour
             currentStamina += regenRate * Time.deltaTime;
             yield return null; // Wait for the next frame
         }
-
         player.playerAnim.SetInteger("trigger", 0);
+
+        yield return new WaitForSeconds(1f);
+
+        FindObjectOfType<audioManager>().Stop("tired");
         player.tired = false;
         player.moveSpeed = player.normalSpeed;
     }

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.Experimental.GraphView;
+using System.Linq;
+//using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
@@ -26,6 +27,7 @@ public class PlayerController : MonoBehaviour
     public float sprintModifier;
     public float crouchHeight;
     public float crouchModifier;
+    private Vector3 originalGravity;
 
     [Header("Camera")]
     public Transform cam;
@@ -37,13 +39,49 @@ public class PlayerController : MonoBehaviour
 
     private void Start()
     {
+        // Dynamically find the player object if not already assigned
+        if (player == null)
+        {
+            GameObject playerObject = GameObject.FindWithTag("Player"); // Ensure your player has the "Player" tag
+            if (playerObject != null)
+            {
+                player = playerObject.transform;
+                playerRb = playerObject.GetComponent<Rigidbody>();
+                playerAnim = playerObject.GetComponent<Animator>();
+
+                // Assign colliders
+                CapsuleCollider[] colliders = playerObject.GetComponents<CapsuleCollider>();
+                foreach (var col in colliders)
+                {
+                    if (col.height > crouchHeight) // Example: determine standing collider by height
+                        standingCollider = col;
+                    else
+                        crouchingCollider = col;
+                }
+            }
+            else
+            {
+                Debug.LogError("Player object not found! Make sure the Player has the 'Player' tag.");
+            }
+        }
+
+        // Initialize other fields
         crouchingCollider.enabled = false;
         standingCollider.enabled = true;
         tired = false;
-        playerAnim = GetComponent<Animator>();
-        Physics.gravity *= gravityModifier;
+
+        if (playerAnim == null)
+        {
+            Debug.LogWarning("Animator component not found on Player.");
+        }
+        
         normalSpeed = moveSpeed;
-        //Cursor.lockState = CursorLockMode.Locked;
+
+        // Hide the cursor
+        Cursor.visible = false;
+
+        // Lock the cursor to the center of the screen
+        Cursor.lockState = CursorLockMode.Locked;
     }
 
     void Update()
@@ -53,6 +91,20 @@ public class PlayerController : MonoBehaviour
 
         cameraInputY = Input.GetAxis("Mouse Y");
         cameraInputX = Input.GetAxis("Mouse X");
+
+        // Press "Escape" to unlock and show the cursor
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            Cursor.visible = true;
+            Cursor.lockState = CursorLockMode.None;
+        }
+
+        // Press "C" to hide and lock the cursor again
+        if (Input.GetKeyDown(KeyCode.C))
+        {
+            Cursor.visible = false;
+            Cursor.lockState = CursorLockMode.Locked;
+        }
 
         if (!tired)
         {
@@ -78,43 +130,52 @@ public class PlayerController : MonoBehaviour
         {
             playerRb.velocity = direction * moveSpeed;
 
-            if (crouched)
-            {
-                playerAnim.SetInteger("trigger", 4); // crouch walking
-                if (Input.GetKeyUp(KeyCode.LeftControl))
-                {
-                    playerAnim.SetInteger("trigger", 0);
-                }
-            }
-            else if (!crouched)
-            {
-                playerAnim.SetInteger("trigger", 1); // normal walking
-            }
+            var audioManager = FindObjectOfType<audioManager>();
+            var footstepsSound = audioManager.sounds.FirstOrDefault(s => s.name == "footsteps");
+            var runSound = audioManager.sounds.FirstOrDefault(s => s.name == "running");
 
             if (Input.GetKey(KeyCode.LeftShift) && !crouched)
             {
-                playerRb.velocity = direction * moveSpeed * sprintModifier; ;
+                // Sprinting
+                playerRb.velocity = direction * moveSpeed * sprintModifier;
                 playerAnim.SetInteger("trigger", 2);
 
-                if (Input.GetKeyDown(KeyCode.LeftControl))
+                if (runSound != null && !runSound.source.isPlaying)
                 {
-                    playerAnim.SetInteger("trigger", 0);
+                    // Stop footsteps sound if running starts
+                    if (footstepsSound != null && footstepsSound.source.isPlaying)
+                    {
+                        audioManager.Stop("footsteps");
+                    }
+                    audioManager.Play("running");
                 }
-            }
-
-        }
-        else if (direction.magnitude == 0)
-        {
-            playerRb.velocity = Vector3.zero;
-
-            if (crouched)
-            {
-                playerAnim.SetInteger("trigger", 3); // crouch idle
             }
             else
             {
-                playerAnim.SetInteger("trigger", 0); // normal idle
+                // Walking
+                playerAnim.SetInteger("trigger", crouched ? 4 : 1);
+
+                if (footstepsSound != null && !footstepsSound.source.isPlaying)
+                {
+                    // Stop running sound if walking starts
+                    if (runSound != null && runSound.source.isPlaying)
+                    {
+                        audioManager.Stop("running");
+                    }
+                    audioManager.Play("footsteps");
+                }
             }
+        }
+        else
+        {
+            // Player is idle
+            playerRb.velocity = Vector3.zero;
+
+            // Stop all movement sounds
+            FindObjectOfType<audioManager>().Stop("footsteps");
+            FindObjectOfType<audioManager>().Stop("running");
+
+            playerAnim.SetInteger("trigger", crouched ? 3 : 0);
         }
 
         if (Input.GetKeyDown(KeyCode.LeftControl))
@@ -134,7 +195,7 @@ public class PlayerController : MonoBehaviour
     {
         standingCollider.enabled = false;
         crouchingCollider.enabled = true;
-        moveSpeed = 2f;
+        moveSpeed *= crouchModifier;
     }
 
     void Stand()

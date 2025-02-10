@@ -11,6 +11,10 @@ TagManager:
   - Window
   - Fuse
   - Keypad
+  - Letter
+  - Noise
+  - CommonLight
+  - ForeverLight
   layers:
   - Default
   - TransparentFX

@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
-using UnityEditor.Experimental.GraphView;
+//using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using static UnityEngine.UI.Image;
 
@@ -25,7 +25,29 @@ public class CameraController : MonoBehaviour
 
     private void Awake()
     {
-        defaultPos = cameraTransform.localPosition.z;
+        // Dynamically find the cameraPivot and cameraTransform
+        Transform cameraManager = GameObject.Find("CameraManager")?.transform;
+        if (cameraManager != null)
+        {
+            cameraPivot = cameraManager.Find("CameraPivot");
+            if (cameraPivot != null)
+            {
+                cameraTransform = cameraPivot.Find("Main Camera");
+            }
+        }
+
+        if (cameraTransform == null || cameraPivot == null)
+        {
+            Debug.LogError("CameraPivot or Main Camera could not be found. Check the hierarchy and naming.");
+        }
+
+        // Store the default camera position
+        if (cameraTransform != null)
+        {
+            defaultPos = cameraTransform.localPosition.z;
+        }
+
+        //DontDestroyOnLoad(gameObject); // Prevent destruction between scene loads
     }
 
     public void FollowTarget()

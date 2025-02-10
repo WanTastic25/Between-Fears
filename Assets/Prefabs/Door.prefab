@@ -369,6 +369,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   keyCheck: 0
   doorAnim: {fileID: 7075466656078404711}
+  elevAnim: {fileID: 0}
+  keypadInteraction: {fileID: 0}
+  dialogueTrigger: {fileID: 0}
+  keypadInteractionObj: {fileID: 0}
+  OnDoorOpened:
+    m_PersistentCalls:
+      m_Calls: []
+  OnDoorReached:
+    m_PersistentCalls:
+      m_Calls: []
+  fuseHandler: {fileID: 0}
 --- !u!135 &6541702954604045337
 SphereCollider:
   m_ObjectHideFlags: 0
